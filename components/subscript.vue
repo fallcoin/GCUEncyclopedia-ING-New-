@@ -1,0 +1,38 @@
+<template>
+	<view class='subsctipt'>
+		<text class='subsctipt-text'>Powered by</text>
+		<image src='../static/image/xingkonglogo.png' class='subsctipt-image'></image>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			};
+		}
+	}
+</script>
+
+<style scoped>
+	.subsctipt {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.subsctipt-text {
+		font-family: Chalkboard;
+		font-size: 25rpx;
+		font-weight: 400;
+		color: rgb(170, 170, 170);
+		margin-right: 5rpx;
+	}
+
+	.subsctipt-image {
+		width: 50px;
+		height: 30px;
+		margin-left: 5rpx;
+	}
+</style>
