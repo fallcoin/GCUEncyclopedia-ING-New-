@@ -52,6 +52,12 @@
 					url: '../feedback/feedback'
 				})
 			}
+		},
+		onShareAppMessage(data) {
+			return {
+				title: '华广百科',
+				path: `/pages/content/content?aid=${this.aid}&title=${this.title}`
+			}
 		}
 	}
 </script>

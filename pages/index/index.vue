@@ -16,7 +16,7 @@
 
 		<!-- 分类图标 -->
 		<view class="nav">
-			<view v-for="item in category" @click="directToCategory" :key="item.key" :data-key="item.key">
+			<view v-for="item in category" @click="directToCategory" :data-key="item.key" :data-name="item.name" :key="item.key">
 				<view>
 					<image :src="item.src"></image>
 				</view>
@@ -54,15 +54,15 @@
 	export default {
 		data() {
 			return {
-				swiperItems: ["../../static/image/background.png", "../../static/image/background.png",
-					"../../static/image/background.png"
+				swiperItems: ["https://xingkong.gqt.gcu.edu.cn/qa/img/background1.png", "https://xingkong.gqt.gcu.edu.cn/qa/img/background1.png",
+					"https://xingkong.gqt.gcu.edu.cn/qa/img/background1.png"
 				],
 				category: [{
 					name: "常见问题",
 					key: "常见问题",
 					src: "../../static/image/usual.png"
 				}, {
-					name: "学习资料",
+					name: "学业相关",
 					key: "学习资料",
 					src: "../../static/image/data.png"
 				}, {
@@ -106,13 +106,20 @@
 			},
 			directToCategory(e) {
 				uni.navigateTo({
-					url: `../category/category?key=${e.currentTarget.dataset.key}`
+					url: `../category/category?name=${e.currentTarget.dataset.name}&key=${e.currentTarget.dataset.key}`
 				})
 			},
 			directToPage(e) {
 				uni.navigateTo({
 				  url: `../content/content?aid=${e.currentTarget.dataset.aid}&title=${e.currentTarget.dataset.title}`
 				})
+			},
+			onShareAppMessage(data) {
+				return {
+					title: '华广百科',
+					imageUrl: 'https://xingkong.gqt.gcu.edu.cn/qa/img/background1.png',
+					path: '/pages/index/index'
+				}
 			}
 		}
 	}

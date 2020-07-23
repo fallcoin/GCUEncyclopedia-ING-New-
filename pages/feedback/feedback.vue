@@ -31,12 +31,9 @@
 				feedBackStr: '',
 				feedbackData: [{
 					isUser: false,
-					avatar: '../static/image/icon.jpg',
+					avatar: 'https://xingkong.gqt.gcu.edu.cn/qa/img/icon.jpg',
 					comstr: '欢迎使用华广信息搜索引擎，有什么想反馈的吗？'
 				}],
-				userInfo: {
-					avatarUrl: ''
-				},
 				height: app.globalData.height * 2 + 30
 			}
 		},
@@ -52,46 +49,46 @@
 				}
 				if (this.feedBackStr.length == 0)
 					return
-				await postFeedBack({
+				let res = await postFeedBack({
 					title: this.feedBackStr
 				})
-				this.feedbackData.push({
-					isUser: true,
-					avatar: this.userInfo.avatarUrl,
-					comstr: this.feedBackStr
-				})
-				this.feedBackStr = ''
-				this.feedbackData.push({
-					isUser: false,
-					avatar: this.feedbackData[0].avatar,
-					comstr: '感谢您的反馈'
-				})
+				if (res === 1) {
+					this.feedbackData.push({
+						isUser: true,
+						avatar: '',
+						comstr: this.feedBackStr
+					})
+					this.feedBackStr = ''
+					this.feedbackData.push({
+						isUser: false,
+						avatar: this.feedbackData[0].avatar,
+						comstr: '感谢您的反馈！'
+					})
+				} else {
+					uni.showToast({
+						title: '提交失败',
+						icon: 'none'
+					})
+				}
 			}
 		},
 		components: {
 			dialogBox,
 			navBar
 		},
-		onLoad() {
-			uni.getStorage({
-				key: "avatar_key",
-				success: (res) => {
-					this.userInfo.avatarUrl = res.data
-				},
-				fail() {
-					uni.showToast({
-						title: '获取头像失败',
-						icon: 'none'
-					})
-				}
-			})
+		onShareAppMessage(data) {
+			return {
+				title: '华广百科',
+				imageUrl: 'https://xingkong.gqt.gcu.edu.cn/qa/img/icon.jpg',
+				path: '/pages/index/index'
+			}
 		}
 	}
 </script>
 
 <style>
 	page {
-		background-image: url('https://chenxuan.online/storage/QA/background.jpg');
+		background-image: url('https://xingkong.gqt.gcu.edu.cn/qa/img/background.jpg');
 		background-attachment: fixed;
 		background-size: 100% 93.5%;
 		background-repeat: no-repeat;
@@ -106,7 +103,7 @@
 	}
 
 	.communication view {
-		margin-bottom: 10rpx;
+		margin-bottom: 20rpx;
 	}
 
 	.hidden-bottom {

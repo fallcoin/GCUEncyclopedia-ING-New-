@@ -1,14 +1,14 @@
 <template>
 	<view class='nav-wrap' :style="'height:' + (height*2 + 20) + 'px;'">
-		<view class='nav-title' :style="'line-height:' + (height*2 + 44) + 'px;'">{{navbarData.title}}</view>
+		<view class='nav-title' :style="'line-height:' + (height*2 + 44) + 'px;'">{{title}}</view>
 		<view style='display: flex; justify-content: space-around;flex-direction: column'>
-			<view class='nav-capsule' :style="'height:' + (height*2 + 44) + 'px;'" v-if='navbarData.showCapsule'>
+			<view class='nav-capsule' :style="'height:' + (height*2 + 44) + 'px;'" v-if='showCapsule'>
 				<view class='nav-cir'>
-					<view @click='_navback' v-if='!share'>
+					<view @click='_navback' class="left-cir" @touchstart="changeStyle('left')" @touchend="changeStyle('left')" :style="isTouchLeft ? 'background-color: #8c9abc;' : ''">
 						<image src='../static/image/pre.png' mode='aspectFill' class='back-pre'></image>
 					</view>
-					<view class='navbar-v-line' v-if='!share'></view>
-					<view @click='_backhome'>
+					<view class='navbar-v-line'></view>
+					<view @click='_backhome' class="right-cir" @touchstart="changeStyle('right')" @touchend="changeStyle('right')" :style="isTouchRight ? 'background-color: #8c9abc;' : ''">
 						<image src='../static/image/home.png' mode='aspectFill' class='back-home'></image>
 					</view>
 				</view>
@@ -23,29 +23,42 @@
 		data() {
 			return {
 				height: '',
-				share: '',
-				navbarData: {
-				  showCapsule: 1, //是否显示左上角图标   1表示显示    0表示不显示
-				  title: '华广信息搜索引擎' //导航栏 中间的标题
-				}
+				isTouchLeft: false,
+				isTouchRight: false
 			};
 		},
 		props: {
+			title: {
+				type: String,
+				default: '华广百科'
+			},
+			showCapsule: {
+				type: Number,
+				default: 1	//是否显示左上角图标   1表示显示    0表示不显示
+			}
 		},
 		created() {
-			this.share = app.globalData.share
 			this.height = app.globalData.height
 		},
 		methods: {
 			// 返回上一页面
 			_navback() {
-				uni.navigateBack()
+				if (getCurrentPages().length == 1)
+					this._backhome()
+				else
+					uni.navigateBack()
 			},
 			//返回到首页
 			_backhome() {
 				uni.reLaunch({
 					url: '../index/index',
 				})
+			},
+			changeStyle(dir) {
+				if (dir === 'left')
+					this.isTouchLeft = !this.isTouchLeft
+				else
+					this.isTouchRight = !this.isTouchRight
 			}
 		}
 	}
@@ -75,7 +88,7 @@
 		right: 0;
 		bottom: 0;
 		margin: auto;
-		font-size: 27rpx;
+		font-size: 35rpx;
 		color: #fff;
 	}
 
@@ -97,7 +110,6 @@
 	.back-home {
 		width: 32rpx;
 		height: 32rpx;
-		margin-top: 10rpx;
 		padding: 10rpx;
 	}
 
@@ -110,7 +122,23 @@
 		border-radius: 55rpx;
 		background-color: #5265d6;
 		height: 60rpx;
-		padding-left: 5rpx;
-		padding-right: 5rpx;
+		overflow: hidden;
+	}
+	
+	.left-cir {
+		flex: 1;
+		height: 60rpx;
+		background-color: #5265d6;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+	}
+	.right-cir {
+		flex: 1;
+		height: 60rpx;
+		background-color: #5265d6;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
 	}
 </style>

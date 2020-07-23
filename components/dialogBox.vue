@@ -1,6 +1,11 @@
 <template>
 	<view :class="isUser ? 'user' : 'service'">
-		<image class="avatar" :src="avatar"></image>
+		<view v-if="isUser" class="avatar">
+			<open-data type="userAvatarUrl"></open-data>
+		</view>
+		<view v-else>
+			<image :src="avatar" class="avatar"></image>
+		</view>
 		<view :class="isUser ? 'user-communication' : 'service-communication'">
 			<view :class="isUser ? 'user-triangle' : 'service-triangle'"></view>
 			<view class="communication">{{comstr}}</view>
@@ -51,6 +56,7 @@
 		height: 65rpx;
 		border-radius: 15rpx;
 		background-color: rgb(255, 255, 255);
+		overflow: hidden;
 	}
 
 	.communication {

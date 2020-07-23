@@ -1,8 +1,10 @@
 <template>
 	<view class="content">
-		<nav-bar></nav-bar>
+		<nav-bar :title="name"></nav-bar>
 		<view :style="'margin-top:' + height + 'px'">
-			<search-bar :isResultPage="true"></search-bar>
+			<view class="search-bar">
+				<search-bar :isResultPage="true"></search-bar>
+			</view>
 			<view class='question-list' v-if="questionTitleData.length">
 				<view v-for="(item, index) in questionTitleData" class="item" :key="index">
 					<Item :title="item.title" :aid="item.aid" :label="item.label" />
@@ -36,7 +38,8 @@
 				questionTitleData: [],
 				page: 1,
 				isLoading: true,
-				height: app.globalData.height * 2 + 30
+				height: app.globalData.height * 2 + 30,
+				name: ''
 			}
 		},
 		components: {
@@ -47,8 +50,9 @@
 			navBar
 		},
 		async onLoad(option) {
+			this.name = option.name
+			this.key = option.key
 			categoryUrl = categoryUrl + option.key
-			console.log(categoryUrl)
 			this.questionTitleData = await getList(categoryUrl, {
 				page: this.page++
 			})
@@ -69,17 +73,25 @@
 				this.questionTitleData = this.questionTitleData.concat(questionTitleData)
 				this.isLoading = false
 			}
+		},
+		onShareAppMessage(data) {
+			return {
+				title: '华广百科',
+				path: `/pages/category/category?name=${this.name}&key=${this.key}`
+			}
 		}
 	}
 </script>
 
-<style scoped>
-	.content {
+<style>
+	page {
 		background-color: rgba(215, 215, 215, 0.2);
-		position: fixed;
-		height: 100%;
-		width: 100%;
-		margin: 0;
+	}
+</style>
+<style scoped>
+	.search-bar {
+		margin-left: 35rpx;
+		margin-right: 35rpx;
 	}
 
 	.question-list {

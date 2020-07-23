@@ -1,9 +1,11 @@
 <template>
 	<view class="content">
 		<nav-bar></nav-bar>
-		
+
 		<view :style="'margin-top:' + height + 'px'">
-			<search-bar :isResultPage="true"></search-bar>
+			<view class="search-bar">
+				<search-bar :isResultPage="true"></search-bar>
+			</view>
 			<view class='question-list' v-if="questionTitleData.length">
 				<view v-for="(item, index) in questionTitleData" class="item" :key="index">
 					<Item :title="item.title" :aid="item.aid" :label="item.label" />
@@ -15,7 +17,7 @@
 				<view class="empty-bottom">
 					<view class="feedback">
 						<view class="feedback2">
-							<view class="feedback3" bindtap="directToFeedback">没有任何结果？ 点击反馈</view>
+							<view class="feedback3" @click="directToFeedback">没有任何结果？ 点击反馈</view>
 						</view>
 					</view>
 				</view>
@@ -67,7 +69,11 @@
 			this.isLoading = false
 		},
 		methods: {
-
+			directToFeedback() {
+				uni.navigateTo({
+					url: '../feedback/feedback'
+				})
+			}
 		},
 		async onReachBottom() {
 			if (this.isLoading === false) {
@@ -80,13 +86,17 @@
 	}
 </script>
 
-<style scoped>
-	.content {
+
+<style>
+	page {
 		background-color: rgba(215, 215, 215, 0.2);
-		position: fixed;
-		height: 100%;
-		width: 100%;
-		margin: 0;
+	}
+</style>
+
+<style scoped>
+	.search-bar {
+		margin-left: 35rpx;
+		margin-right: 35rpx;
 	}
 
 	.question-list {
